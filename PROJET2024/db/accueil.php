@@ -1,6 +1,6 @@
 <?php 
 session_start();
-echo $SESSION_['role'];
+
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +19,7 @@ echo $SESSION_['role'];
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">SOMMETS</a>
+        <a class="navbar-brand" href="accueil.php">SOMMETS</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -51,14 +51,18 @@ echo $SESSION_['role'];
             <!-- Si l'utilisateur est est un editeur -->
             <p class="lead">Veuillez choisir un mode pour continuer :</p>
             <div class="d-flex justify-content-center mt-4">
-                <a href="#" class="btn btn-primary mx-2">Mode Édition</a>
-                <a href="#" class="btn btn-secondary mx-2">Mode Exécution</a>
+                <form method="post" action="catalogue.php">
+                    <button type="submit" class="btn btn-primary mx-2" name="mode" value=false>Mode Exécution</button>
+                    <button type="submit" class="btn btn-secondary mx-2" name="mode" value=true>Mode Edition</button>
+                </form>
             </div>
         <?php elseif($_SESSION['role'] == 2): ?>
             <!-- Si l'utilisateur est non-editeur -->
             <p class="lead">Veuillez choisir un mode pour continuer :</p>
             <div class="d-flex justify-content-center mt-4">
-                <a href="#" class="btn btn-secondary mx-2">Mode Exécution</a>
+                <form method="post" action="catalogue.php">
+                    <button type="submit" class="btn btn-primary mx-2" name="mode" value=2>Mode Exécution</button>
+                </form>
             </div>  
         <?php endif; ?>
     <?php else: ?> 

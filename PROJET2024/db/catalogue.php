@@ -1,8 +1,50 @@
+<?php 
+session_start();
+?>
+
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Catalogue</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>catalogue- SOMMETS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<body>
+   
+    
+
+    
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="accueil.php">SOMMETS</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+            <?php if(isset($_SESSION['conn']) && $_SESSION['conn'] == true): ?>    
+                    <li class="nav-item">
+                        <a class="nav-link" href="deconnexion.php">Déconnexion</a>
+                    </li>        
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="formu.php">Connexion</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="formu_inscription.php">Inscription</a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5 text-center">
+    <h1>Liste des catalogues :</h1></br></br>
+
+
 <body>
     <?php 
     session_start();
@@ -13,7 +55,11 @@
     if ($connexion->connect_error) {
         die("Connexion non établie : " . $connexion->connect_error);
     }
-
+    // si l'utilisateur est en mode édition ou exécution
+    $mode = $_POST['mode'];
+    $_SESSION['mode'] = $mode;
+    
+    
 
     // Préparation et exécution de la requête
     $statement = $connexion->prepare("SELECT name,id FROM catalog;");
@@ -34,21 +80,22 @@
             // création d'un bouton pour chaque image du catalogue pour le moment
             const form = document.createElement('form');
             form.action = 'modif.php'; 
-            form.method = 'post';       
+            form.method = 'get';       
             form.action = 'imageCatalogue.php'; 
             const hiddenInput = document.createElement('input');
             hiddenInput.type = 'hidden';
-            hiddenInput.name = 'image';
+            hiddenInput.name = 'catalogue';
             hiddenInput.value = rows[i].id; 
             const submitButton = document.createElement('input');
             submitButton.type = 'submit';
-            submitButton.name = 'Test';
-            submitButton.id = 'boutonTest';  
-            submitButton.value = "image " +  rows[i].name;    
+            submitButton.value = rows[i].name;    
             form.appendChild(hiddenInput);
             form.appendChild(submitButton);
             document.body.appendChild(form);
         }
     </script>
+
+    
+
 
 </body>
