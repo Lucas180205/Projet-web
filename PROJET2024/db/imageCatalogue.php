@@ -54,7 +54,7 @@
 
     
      // Préparation et exécution de la requête
-     $statement = $connexion->prepare("SELECT catalogimage.imageId,image.name,catalogimage.position FROM catalogimage INNER JOIN image ON catalogimage.imageId = image.id WHERE catalogimage.catalogId = ? ORDER BY catalogimage.position ASC;");
+     $statement = $connexion->prepare("SELECT catalogimage.imageId,image.name,catalogimage.position,bank.dir FROM catalogimage INNER JOIN image ON catalogimage.imageId = image.id INNER JOIN bank ON bank.id = image.bankId WHERE catalogimage.catalogId = ? ORDER BY catalogimage.position ASC;");
      $statement->bind_param("s", $catalogue); // Lier le paramètre
      $statement->execute(); // Exécuter la requête
  
@@ -65,7 +65,7 @@
          $rows[] = $row;
      }
      //première image du catalogue
-     $image0 = $rows[0]['name']; 
+    $image0 = "../images/".$rows[0]['dir'] ."/". $rows[0]['name']; 
      //nombre d'image dans le catalogue
      $maxImage = count($rows); 
      $statement->close();
@@ -76,7 +76,7 @@
         $position = $_GET['position']; // Récupérer le paramètre position
     }elseif(isset($_GET['position']) && (!isset($_GET['image']))){
         $position = $_GET['position'];
-        $statement = $connexion->prepare("SELECT image.name FROM catalogimage INNER JOIN image ON catalogimage.imageId = image.id WHERE catalogimage.catalogId = ? AND position=? ;");
+        $statement = $connexion->prepare("SELECT image.name,bank.dir FROM catalogimage INNER JOIN image ON catalogimage.imageId = image.id INNER JOIN bank ON bank.id = image.bankId WHERE catalogimage.catalogId = ? AND position=? ;");
         $statement->bind_param("ss", $catalogue , $position); // Lier le paramètre
         $statement->execute(); // Exécuter la requête
     
@@ -85,20 +85,21 @@
         while ($row1 = $result->fetch_assoc()) {
             $rows1[] = $row1;
         }
-        $image1 = $rows1[0]['name']; 
+    
+        $image1 = "../images/".$rows[$position-1]['dir'] ."/". $rows1[0]['name']; 
         echo '<script>
         const currentUrl = window.location.href; 
-        const urlImage = "image=" + encodeURIComponent("' .$image1. '");
+        const urlImage = "image=' . $image1 . '";
         if (!currentUrl.includes("image=")) {
             window.location.href = currentUrl + "&" + urlImage;
         }
         </script>';
         $statement->close();
         $connexion->close();  
-    }else {  
+        }else {  
         echo '<script>
         const currentUrl = window.location.href; 
-        const urlImage = "image=" + encodeURIComponent("' .$image0. '");
+        const urlImage = "image=' . $image0 . '";
         const urlPosition = "position=1";
         if (!currentUrl.includes("image=")) {
             window.location.href = currentUrl + "&" +  urlPosition + "&" + urlImage;
@@ -107,7 +108,7 @@
     }
 
     //position suivante
-    if ($position >= count($rows)){
+    if ($position == count($rows)){
         $suivant = $position;
     }else{
         $suivant = $position+1;
@@ -138,7 +139,7 @@
             var suivant = "<?php echo $suivant; ?>";
             var precedent = "<?php echo $precedent; ?>";
         document.getElementById('gauche').addEventListener('click', function() {
-            const newUrl = window.location.origin + window.location.pathname + "?catalogue="+catalogue+""+"&iposition="+precedent+"";
+            const newUrl = window.location.origin + window.location.pathname + "?catalogue="+catalogue+""+"&position="+precedent+"";
             window.location.href = newUrl; 
         });
 
