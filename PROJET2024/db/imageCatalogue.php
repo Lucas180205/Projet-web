@@ -1,6 +1,7 @@
 
 <?php 
     session_start();
+    $_SESSION['mode'] = 1;
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +43,7 @@
 </nav>
 
     <?php // teste si on est bien connecté sur le site
-        if(isset($_SESSION['conn']) && $_SESSION['conn'] == true): 
+        if(isset($_SESSION['conn']) && $_SESSION['conn'] == true):  
     ?> 
 
     <?php 
@@ -57,7 +58,7 @@
     $catalogue = $_GET['catalogue']; 
 
     // Préparation et exécution de la requête pour chercher toutes le simages liées au catalogue choisis
-    $statement = $connexion->prepare("SELECT catalogimage.imageId,image.name,catalogimage.position,bank.dir FROM catalogimage INNER JOIN image ON catalogimage.imageId = image.id INNER JOIN bank ON bank.id = image.bankId WHERE catalogimage.catalogId = ? ORDER BY catalogimage.position ASC;");
+    $statement = $connexion->prepare("SELECT catalogimage.imageId,image.name,catalogimage.position,bank.dir,label.points FROM catalogimage  INNER JOIN image ON catalogimage.imageId = image.id INNER JOIN label ON label.imageId = image.id INNER JOIN bank ON bank.id = image.bankId WHERE catalogimage.catalogId = ? ORDER BY catalogimage.position ASC;");
     $statement->bind_param("s", $catalogue); // Lier le paramètre
     $statement->execute(); // Exécuter la requête
  
@@ -127,6 +128,10 @@
         $precedent = $position-1;
     }
 
+
+
+    $points = $rows[0]['points'];
+    
     
 ?>
 <!-- création des boutons pour tourner la page du catalogue et éventuellement un bouton edition si l'utilisateur est en mode edition-->
@@ -149,7 +154,7 @@
                 </thead>
             </table>
     <script src="image.js"></script> 
-        
+         
         <script>
             //script pour les boutons page suivante,precedent et edition
             // renvoie chacun vers une page + addition de variable pour les récupérer en $_get
@@ -172,6 +177,20 @@
             const newUrl3 = "modif.php?catalogue=" + catalogue + "&position=" + position + "&image=" + image;
             window.location.href = newUrl3; 
         });
+
+        //recupère la chaine de points de la bdd et la mets sous forme de tableau
+        var chainePoints = "<?php echo $points ?>";
+        var points = chainePoints.split(":");
+        var tab = [];
+        for (var i = 0; i < points.length; i++) {
+            var coord = points[i].split(",");
+            tab.push([parseInt(coord[0]), parseInt(coord[1])]);
+        }
+        //afficher les points dans la console 
+        for (var j = 0; j < tab.length; j++) {
+        console.log(tab[j][0],tab[j][1]);
+        }
+
     </script>
     <?php else: ?> 
         <p class="lead">Veuillez vous connecter pour continuer  :</p>
