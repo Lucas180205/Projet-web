@@ -66,16 +66,28 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="4" style="text-align: center;"><input id="boutton_envoyer" type="submit" name="Envoyer" value="Valider"></td></form>
-                </tr>
+                    <td colspan="4" style="text-align: center;">
+                        <input id="boutton_envoyer" type="submit" name="Envoyer" value="Valider"></form>
+                        <input id="bouton_tracer" type="button" value="Tracer">
+                        <input id="bouton_reset" type="button" value="Reset"></td></tr>
             </tfoot>
-        </table>
-        <script src="sommets.js"></script>
-        <?php else:?> 
-            
+        </table> 
+        <script>
+            const bouton_tracer = document.getElementById('bouton_tracer');
+            bouton_tracer.addEventListener("click", (event) => {
+                dessinerForme(points);
+                afficherCoordonnees();
+            });
+            const bouton_reset = document.getElementById('bouton_reset');
+            bouton_reset.addEventListener("click", (event) => {
+                location.reload();
+            });
+        </script>
+    <?php else:?> 
         <p class="lead">Veuillez vous connecter pour continuer  :</p>
-        <?php endif; ?>
+    <?php endif; ?>
 
-        
-    </body>
+<script src="sommets.js"></script>   
+    
+</body>
 </html>

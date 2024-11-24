@@ -6,6 +6,9 @@ const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 const img = new Image();
 var points = [];
+bouton.disabled = true;
+bouton.style.opacity = "0.5"; // Optionnel
+bouton.style.cursor = "not-allowed";
 
 // Affichage de l'image si le paramètre 'src' existe
 if (imageSrc) {
@@ -27,6 +30,8 @@ const dessinerPoints = (x, y) => {
 	context.fill()
 }
 
+
+
 const positionPoint = document.getElementById("positionPoint");
 const hiddenPositionPoints = document.getElementById("hiddenPoints");
 
@@ -44,13 +49,18 @@ canvas.addEventListener("click", evt => {
 })
 
 
+
 bouton.addEventListener("click", () =>{
 	dessinerForme(points);
 	afficherCoordonnees();
 })
 
 const dessinerForme = points => {
-	if (points.length < 2) return; // S'assurer qu'il y a assez de points pour tracer une forme
+	if (points.length > 2){ // S'assurer qu'il y a assez de points pour tracer une forme
+    //on réactive le bouton
+    bouton.disabled = false; 
+    bouton.style.opacity = "1"; 
+    bouton.style.cursor = "pointer"; 
 
     context.lineWidth = 2;
     context.clearRect(0, 0, canvas.width, canvas.height); // Effacer le canvas
@@ -67,7 +77,7 @@ const dessinerForme = points => {
     context.closePath(); // Relier le dernier point au premier pour fermer la forme
     context.stroke();
 	afficherCoordonnees();
-}
+}}
 
 console.log("Chemin de l'image :", imageSrc);
 
