@@ -1,7 +1,6 @@
 
 <!DOCTYPE html>
 <html lang="fr">
-
 <?php
 session_start();
 require('dbconfig.php'); 
@@ -15,27 +14,38 @@ if ($connexion->connect_error) {
 
 // Récupération des données de l'étiquette
 $nom = $_POST['nom_etiquette'];
-$position = $_POST['coord'];
+$points = $_POST['coord'];
 $description = $_POST['description'];
-$html = "none";
-$catalog = 1; //$_POST['catalogId'];
-$image = 1; //$_POST['imageId'];
+$html = "none"; // html à faire
+$catalogId = $_GET['catalogue']; 
+$position = $_GET['position'];
+
+//récupère l'id de l'image 
+$statement = $connexion->prepare("SELECT image.id FROM catalogimage INNER JOIN image ON catalogimage.imageId = image.id WHERE catalogimage.catalogId = ? AND position=? ;");
+        $statement->bind_param("ss", $catalogId , $position); // Lier le paramètre
+        $statement->execute(); // Exécuter la requête
+    
+        $result = $statement->get_result();
+        $rows1 = [];
+        while ($row1 = $result->fetch_assoc()) {
+            $rows1[] = $row1;
+        }
+        
+        $imageId = $rows1[0]['id'];
+        $statement->close();
 
 
 
-// Préparation de la requête ATTENTION REQUETE FAUSSE CAR IL MANQUE DES CATALOGUES
+// Préparation de la requête pour le label
 $statement = $connexion->prepare("INSERT INTO label (catalogId, imageId, name, description, points, html) VALUES ( ?, ?, ?, ?, ?,?)");
 
-//Lier les valeurs aux points d'interrogation dans la requête
-
-$statement->bind_param("ssssss", $catalog, $image , $nom, $description, $position, $html);
+$statement->bind_param("ssssss", $catalogId, $imageId , $nom, $description, $points, $html);
 
 $statement->execute();
 
-// Fermer la requête et la connexion
-
 $statement->close();
 $connexion->close();
+
 //renvoie à la page précédente après l'implémentation dans la base de donnée
 if (isset($_SERVER['HTTP_REFERER'])) {
     header("Location: " . $_SERVER['HTTP_REFERER']);

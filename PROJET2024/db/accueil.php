@@ -1,6 +1,5 @@
 <?php 
 session_start();
-
 ?>
 
 <!DOCTYPE html>
@@ -13,19 +12,17 @@ session_start();
 </head>
 <body>
    
-    
-
-    
 <!-- Navbar -->
+<!-- bouton connexion et deconnexion -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="accueil.php">SOMMETS</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-            <?php if(isset($_SESSION['conn']) && $_SESSION['conn'] == true): ?>    
+                <?php if(isset($_SESSION['conn']) && $_SESSION['conn'] == true): ?>    
                     <li class="nav-item">
                         <a class="nav-link" href="deconnexion.php">Déconnexion</a>
                     </li>        
@@ -52,8 +49,8 @@ session_start();
             <p class="lead">Veuillez choisir un mode pour continuer :</p>
             <div class="d-flex justify-content-center mt-4">
                 <form method="post" action="catalogue.php">
-                    <button type="submit" class="btn btn-primary mx-2" name="mode" value=false>Mode Exécution</button>
-                    <button type="submit" class="btn btn-secondary mx-2" name="mode" value=true>Mode Edition</button>
+                    <button type="submit" class="btn btn-primary mx-2" name="mode" value=0>Mode Exécution</button>
+                    <button type="submit" class="btn btn-secondary mx-2" name="mode" value=1>Mode Edition</button>
                 </form>
             </div>
         <?php elseif($_SESSION['role'] == 2): ?>
@@ -61,7 +58,7 @@ session_start();
             <p class="lead">Veuillez choisir un mode pour continuer :</p>
             <div class="d-flex justify-content-center mt-4">
                 <form method="post" action="catalogue.php">
-                    <button type="submit" class="btn btn-primary mx-2" name="mode" value=2>Mode Exécution</button>
+                    <button type="submit" class="btn btn-primary mx-2" name="mode" value=0>Mode Exécution</button>
                 </form>
             </div>  
         <?php endif; ?>

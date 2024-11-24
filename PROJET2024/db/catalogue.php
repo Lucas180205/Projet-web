@@ -19,12 +19,12 @@ session_start();
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="accueil.php">SOMMETS</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-            <?php if(isset($_SESSION['conn']) && $_SESSION['conn'] == true): ?>    
+                <?php if(isset($_SESSION['conn']) && $_SESSION['conn'] == true): ?>    
                     <li class="nav-item">
                         <a class="nav-link" href="deconnexion.php">Déconnexion</a>
                     </li>        
@@ -40,12 +40,13 @@ session_start();
         </div>
     </div>
 </nav>
-
-<div class="container mt-5 text-center">
-    <h1>Liste des catalogues :</h1></br></br>
-
-
+    <div class="container mt-5 text-center">
+        <h1>Liste des catalogues :</h1></br></br>
 <body>
+    
+    <?php 
+    //teste si on est bien connecté
+    if(isset($_SESSION['conn']) && $_SESSION['conn'] == true): ?>                     
     <?php 
     session_start();
     require('dbconfig.php'); 
@@ -56,15 +57,18 @@ session_start();
         die("Connexion non établie : " . $connexion->connect_error);
     }
     // si l'utilisateur est en mode édition ou exécution
-    $mode = $_POST['mode'];
-    $_SESSION['mode'] = $mode;
+    if (isset($_SESSION['mode'])) {
+       if(isset($_POST['mode'])){
+        $_SESSION['mode'] = $_POST['mode'];
+        }
+    }
     
-    
-
-    // Préparation et exécution de la requête
+    // Préparation et exécution de la requête pour chercher tout les catalogues
     $statement = $connexion->prepare("SELECT name,id FROM catalog;");
-    $statement->execute(); // Exécuter la requête
+    // Exécuter la requête
+    $statement->execute(); 
     $result = $statement->get_result();
+    // mettre la requête sous un format exploitable (tableau)
     $rows = [];
     while ($row = $result->fetch_assoc()) {
         $rows[] = $row;
@@ -77,7 +81,8 @@ session_start();
         var rows = <?php echo json_encode($rows); ?>;
         // Boucle pour itérer sur le tableau de données
         for (var i = 0; i < rows.length; i++) {
-            // création d'un bouton pour chaque image du catalogue pour le moment
+            // création d'un bouton pour chaque catalogue pour le moment mais on peut faire autre chose
+            // format get 
             const form = document.createElement('form');
             form.action = 'modif.php'; 
             form.method = 'get';       
@@ -94,7 +99,9 @@ session_start();
             document.body.appendChild(form);
         }
     </script>
-
+    <?php else: ?> 
+        <p class="lead">Veuillez vous connecter pour continuer  :</p>
+<?php endif; ?>
     
 
 
