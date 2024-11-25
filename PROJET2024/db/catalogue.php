@@ -61,6 +61,8 @@ session_start();
        if(isset($_POST['mode'])){
         $_SESSION['mode'] = $_POST['mode'];
         }
+    }else{
+        $_SESSION['mode'] = 0;
     }
     
     // Préparation et exécution de la requête pour chercher tout les catalogues
