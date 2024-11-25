@@ -15,10 +15,22 @@ if (imageSrc) {
     // Chargement de l'image
     img.src = imageSrc;
     img.onload = function() {
-        // Ajuste la taille du canvas à celle de l'image
-        canvas.width = img.width;
-        canvas.height = img.height;
-        context.drawImage(img, 0, 0);
+        // Définit la taille fixe du canvas
+        canvas.width = 500;
+        canvas.height = 500;
+
+        // Calcule les ratios pour le redimensionnement et le centrage
+        const widthRatio = 500 / img.width;
+        const heightRatio = 500 / img.height;
+        const scale = Math.max(widthRatio, heightRatio);
+
+        const newWidth = img.width * scale;
+        const newHeight = img.height * scale;
+
+        const offsetX = (500 - newWidth) / 2;
+        const offsetY = (500 - newHeight) / 2;
+        // Dessine l'image redimensionnée et centrée
+        context.drawImage(img, offsetX, offsetY, newWidth, newHeight);
     };
 } else {
     document.body.innerHTML = "<p>Aucune image à afficher.</p>";
@@ -56,28 +68,42 @@ bouton.addEventListener("click", () =>{
 })
 
 const dessinerForme = points => {
-	if (points.length > 2){ // S'assurer qu'il y a assez de points pour tracer une forme
-    //on réactive le bouton
-    bouton.disabled = false; 
-    bouton.style.opacity = "1"; 
-    bouton.style.cursor = "pointer"; 
+	 // On réactive le bouton
+     bouton.disabled = false; 
+     bouton.style.opacity = "1"; 
+     bouton.style.cursor = "pointer"; 
 
-    context.lineWidth = 2;
-    context.clearRect(0, 0, canvas.width, canvas.height); // Effacer le canvas
-    context.drawImage(img, 0, 0); // Redessiner l'image de fond pour conserver l'arrière-plan
+     context.lineWidth = 2;
 
-    context.beginPath();
-    context.moveTo(points[0][0], points[0][1]); // Commencer au premier point
+     // Effacer le canvas
+     context.clearRect(0, 0, canvas.width, canvas.height); 
 
-    // Tracer des lignes vers tous les autres points
-    for (let i = 1; i < points.length; i++) {
-        context.lineTo(points[i][0], points[i][1]);
-    }
+     // Redessiner l'image avec redimensionnement et centrage
+     const widthRatio = 500 / img.width;
+     const heightRatio = 500 / img.height;
+     const scale = Math.max(widthRatio, heightRatio);
+     const newWidth = img.width * scale;
+     const newHeight = img.height * scale;
+     const offsetX = (500 - newWidth) / 2;
+     const offsetY = (500 - newHeight) / 2;
 
-    context.closePath(); // Relier le dernier point au premier pour fermer la forme
-    context.stroke();
-	afficherCoordonnees();
-}}
+     context.drawImage(img, offsetX, offsetY, newWidth, newHeight);
+
+     // Tracer la forme
+     context.beginPath();
+     context.moveTo(points[0][0], points[0][1]); // Commencer au premier point
+
+     // Tracer des lignes vers tous les autres points
+     for (let i = 1; i < points.length; i++) {
+         context.lineTo(points[i][0], points[i][1]);
+     }
+
+     context.closePath(); // Relier le dernier point au premier pour fermer la forme
+     context.stroke();
+
+     afficherCoordonnees(); // Mettre à jour les coordonnées
+ }
+
 
 console.log("Chemin de l'image :", imageSrc);
 
