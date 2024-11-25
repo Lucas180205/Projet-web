@@ -85,3 +85,5 @@ img.onerror = function() {
     console.error("Erreur lors du chargement de l'image :", imageSrc);
     document.body.innerHTML = "<p>Erreur lors du chargement de l'image.</p>";
 };
+
+
