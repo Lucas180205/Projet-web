@@ -1,0 +1,65 @@
+#canvas{
+	border: 2px solid black;
+	background-size: cover;
+	cursor: crosshair;
+	margin:auto;
+	display: flex;
+	justify-content: center;
+	border-radius: 5px;
+}
+
+#tableau{
+	border-collapse: collapse;
+	border-radius: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: auto;
+	margin-top: 20px;
+	background-color: lightgray;
+	margin-bottom: auto;
+}
+
+thead, tr, th, td{
+	padding: 5px 15px 5px;
+}
+
+#boutton_envoyer, #bouton_reset, #bouton_tracer, #bouton, #bouton_masquer, #edit, #gauche, #droite, #boutton{
+	background-color: white;
+	border-style: solid;
+	border-width: thin;
+	border: 2 px solid black;
+	border-radius: 5px;
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+
+tfoot td {
+    text-align: center;
+}
+
+.points-info{
+	font-family: Arial, Helvetica, sans-serif;
+	margin: auto;
+}
+
+form{
+    display: flex;
+    margin: auto;
+    padding: 10px;
+    justify-content: center;
+}
+
+input{
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    border-width: thin;
+}
+
+#redirection{
+	font-family: Arial, Helvetica, sans-serif;
+	text-align: center;
+}
+
+	
