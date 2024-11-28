@@ -1,0 +1,81 @@
+#canvas{
+	border: 2px solid black;
+	background-size: cover;
+	cursor: crosshair;
+	margin:auto;
+	display: flex;
+	justify-content: center;
+	border-radius: 5px;
+}
+
+#tableau_etiquette{
+	border-style: solid;
+	border-width: thin;
+	border: 2px solid black;
+	border-radius: 5px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: auto;
+	margin-top: 10px;
+	background-color: lightgray;
+}
+
+#tableau{
+	border-collapse: collapse;
+	border-radius: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: auto;
+	margin-top: 20px;
+	background-color: lightgray;
+	margin-bottom: auto;
+}
+
+thead, tr, th, td{
+	padding: 5px 15px 5px;
+}
+
+#boutton_envoyer{
+	background-color: white;
+	border-style: solid;
+	border-width: thin;
+	border: 2 px solid black;
+	border-radius: 5px;
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+
+form{
+    display: flex;
+    margin: auto;
+    padding: 10px;
+    justify-content: center;
+}
+
+tfoot td {
+    text-align: center;
+}
+
+input{
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    border-width: thin;
+}
+
+.points-info{
+	font-family: Arial, Helvetica, sans-serif;
+	margin: auto;
+}
+
+form{
+    display: flex;
+    margin: auto;
+    padding: 10px;
+    justify-content: center;
+}
+
+#redirection{
+	font-family: Arial, Helvetica, sans-serif;
+	text-align: center;
+}
