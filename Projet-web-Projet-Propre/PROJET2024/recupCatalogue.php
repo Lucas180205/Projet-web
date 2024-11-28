@@ -29,6 +29,6 @@ $newId = $connexion->insert_id;
 // Fermer la requête et la connexion
 $statement->close();
 $connexion->close();
-header("Location: modifCatalogue.php?catalogue=" . $newId);
+header("Location: catalogue.php?catalogue=" . $newId);
 
 ?>
