@@ -59,7 +59,7 @@ session_start();
             <p class="lead">Veuillez choisir un mode pour continuer :</p>
             <div class="d-flex justify-content-center mt-4">
                 <form method="post" action="catalogue.php">
-                    <button type="submit" class="btn btn-primary mx-2" name="mode" value=0>Mode Exécution</button>
+                    <button type="submit" id="bouttonAccueil" name="mode" value=0>Mode Exécution</button>
                 </form>
             </div>  
         <?php endif; ?>
