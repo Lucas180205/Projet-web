@@ -133,8 +133,6 @@
                     <input type="text" name="0" placeholder="paramètre" >
                     <input type="text" name="1" placeholder="Valeur" >
                 <h1></h1>
-                    <input type="text" name="2" >
-                    <input type="text" name="3" >
                     </td>
                 </tr>
             </tbody>
