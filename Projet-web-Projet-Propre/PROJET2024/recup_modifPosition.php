@@ -11,10 +11,12 @@ if ($connexion->connect_error) {
 // Récupération des données du formulaire inscription
 $newPosition = $_POST['newsPosition']; 
 $catalogue = $_GET['catalogue'];
-$position = $_POST['pose'];
+$pose = $_POST['pose'];
+
+
 
 //recupère toute les positions et id des images du catalogue
-$statement = $connexion->prepare("SELECT imageId,position FROM catalogimage WHERE catalogId=?;");
+$statement = $connexion->prepare("SELECT imageId,position FROM catalogimage WHERE catalogId=? ORDER BY position ASC;");
         $statement->bind_param("s", $catalogue); // Lier le paramètre
         $statement->execute(); // Exécuter la requête
     
@@ -27,7 +29,7 @@ $statement = $connexion->prepare("SELECT imageId,position FROM catalogimage WHER
         //mets les positions dans un tableau
         $tableauPosition = [];
         for ($i = 0; $i < count($rows1); $i++) {
-            array_push($tableauPosition, $rows1[$i]['position']);
+            array_push($tableauPosition, $rows1[$i]['imageId']);
         }
         
 //passage avec réference 
@@ -45,14 +47,25 @@ function reposition(array &$tab, $nombre, $newIndex) {
     array_splice($tab, $newIndex, 0, $nombre);
     return true; // Succès
 }
+$max = (count($rows1)+1);
+
+
+
+
 //lancement de la fonction pour avoir les nouvelles positions
-reposition($tableauPosition, $position, $newPosition-1);
+reposition($tableauPosition, $pose, $newPosition-1);
+
+
+
 //application des positions dans la bdd
-for ($i = 0; $i < count($rows1); $i++) {
+for ($i = 1; $i < $max ; $i++) {
     $statement = $connexion->prepare("UPDATE catalogimage SET position = ? WHERE catalogId = ? AND imageId = ?;");
-    $statement->bind_param("sss", $tableauPosition[$i],$catalogue,$rows1[$i]['imageId']); 
+    $statement->bind_param("sss", $i ,$catalogue,$tableauPosition[$i-1]); 
     $statement->execute(); 
     $statement->close();
+    $t = $tableauPosition[$i-1];
+    echo "UPDATE catalogimage SET position = $i WHERE  imageId = $t ;";
+    
 }
 
 
@@ -60,6 +73,6 @@ for ($i = 0; $i < count($rows1); $i++) {
 
 
 $connexion->close();
-header("Location: imageCatalogue.php?catalogue=" . $catalogue);
+header("Location: catalogue.php");
 
 ?>
