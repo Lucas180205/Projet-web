@@ -23,6 +23,16 @@
             $rows1[] = $row1;
         }
 
+        $statement = $connexion->prepare("SELECT imageId FROM catalogimage WHERE position = ? AND catalogId = ?;");
+        $statement->bind_param("ss", $position, $catalogue); // Lier le paramètre
+        $statement->execute(); // Exécuter la requête
+    
+        $result = $statement->get_result();
+        $rows2 = [];
+        while ($row2 = $result->fetch_assoc()) {
+            $rows2[] = $row2;
+        }
+
     $nomCatalogue = $rows1[0]['name']; 
     $nombrePage = count($rows1);
     $statement->close();
@@ -89,14 +99,15 @@
 <td><label>Changer la position de l'image :</label>
     <select name="newsPosition" id="newsP">
         <?php
-        $max = 10; 
+        
         for ($i = 1; $i <= $nombrePage; $i++) {
             echo "<option value=\"$i\">$i</option>";
         }
         ?>
     </select></td>
-    <td><input type="hidden" id="hiddenId" name="pose" value="<?php echo $position; ?>"></td>
+    <td><input type="hidden" id="hiddenId" name="pose" value="<?php echo $rows2[0]['imageId'] ;?>"></td>
 <input id="bouton_valider" type="submit" name="Envoyer" value="Valider"></form></br>
+
 
         <canvas id="canvas"></canvas>
         <table id="tableau_etiquette">
@@ -110,7 +121,7 @@
             <tbody>
                 <tr>
                      <!-- Formulaire pour la création de l'étiquette -->
-                      
+                     
                     <form  method="post" action="recup_modif.php?catalogue=<?php echo $catalogue; ?>&position=<?php echo $position; ?>">
                     <td><input type="text" name="nom_etiquette" placeholder="Nom de l'étiquette" required /></td>
                     <p id = "positionPoint" type="hidden" name="position_points" ></p></td>
@@ -119,6 +130,8 @@
                     <input type="text" name="0" placeholder="paramètre" required>
                     <input type="text" name="1" placeholder="Valeur" required>
                 <h1></h1>
+                    <input type="text" name="2"  required>
+                    <input type="text" name="3"  required>
                     </td>
                 </tr>
             </tbody>
