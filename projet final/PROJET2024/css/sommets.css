@@ -22,7 +22,7 @@ thead, tr, th, td{
 	padding: 5px 15px 5px;
 }
 
-#boutton_envoyer, #bouton_reset, #bouton_tracer, #bouton, #bouton_masquer, #edit, #gauche, #droite, #boutton{
+#boutton_envoyer, #bouton_reset, #bouton_tracer, #bouton, #bouton_masquer, #edit, #gauche, #droite, #boutton, #bouton_deletI, #bouton_deleteC, #bouton_valider, #bouton_ligne{
 	background-color: white;
 	border-style: solid;
 	border-width: thin;
